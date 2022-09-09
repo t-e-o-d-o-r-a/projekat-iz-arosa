@@ -3,7 +3,7 @@
 #include <semaphore.h>
 #include <unistd.h>
 
-sem_t soba;  //counting semaphore jer u sobu moze da udje vise filozofa u 			isto vreme
+sem_t soba;  
 sem_t stapic[5];  //binarni semafor
 
 
@@ -13,15 +13,16 @@ void jede(int f);
 int main(){
 
 	int br[5]; //odnosi se na broj svakog filozofa
-	pthread_t nit[5];  //5 niti = 5 filozofa = 5 procesa 
-			//oni su niti jer treba da se izvrsavaju istovremeno
+	pthread_t nit[5];  //5 niti = 5 filozofa
 	
-	sem_init(&soba, 0, 4); //nula u sredini znaci da vise niti deli 						ovaj semafor
-	//u sobu smeju samo 4 filozofa da ne bi doslo do deadlock-a	
+	//inicijalizacija semafora
+	sem_init(&soba, 0, 4);  //u sobu smeju samo 4 filozofa da ne bi doslo do deadlock-a	
 	
 	for (int i = 0; i<5; i++){
 		sem_init(&stapic[i], 0, 1);
 	}
+	
+	//kreiraju se niti
 	for (int i = 0; i<5; i++){
 		br[i] = i;
 		pthread_create(&nit[i], NULL, filozof, (void*)&br[i]);
